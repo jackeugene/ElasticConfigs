@@ -1,0 +1,211 @@
+id: 12eadf90-fdb2-11ea-94c8-e1f0613c8baf
+revision: 2
+outputs:
+  default:
+    type: elasticsearch
+    hosts:
+      - 'https://dc6edaca0f87404ca24eb78937a85361.us-east-1.aws.found.io:443'
+    username: elastic
+    password: y4MHumjVDDWGiSb0pVFmelT7
+agent:
+  monitoring:
+    enabled: true
+    use_output: default
+    logs: true
+    metrics: true
+inputs:
+  - id: 13470950-fdb2-11ea-94c8-e1f0613c8baf
+    name: system-1
+    type: logfile
+    use_output: default
+    meta:
+      package:
+        name: system
+        version: 0.5.3
+    data_stream:
+      namespace: default
+    streams:
+      - id: logfile-system.auth
+        data_stream:
+          dataset: system.auth
+          type: logs
+        paths:
+          - /var/log/auth.log*
+          - /var/log/secure*
+        exclude_files:
+          - .gz$
+        multiline:
+          pattern: ^\s
+          match: after
+        processors:
+          - add_locale: null
+          - add_fields:
+              target: ''
+              fields:
+                ecs.version: 1.5.0
+      - id: logfile-system.syslog
+        data_stream:
+          dataset: system.syslog
+          type: logs
+        paths:
+          - /var/log/messages*
+          - /var/log/syslog*
+        exclude_files:
+          - .gz$
+        multiline:
+          pattern: ^\s
+          match: after
+        processors:
+          - add_locale: null
+          - add_fields:
+              target: ''
+              fields:
+                ecs.version: 1.5.0
+  - id: 13470950-fdb2-11ea-94c8-e1f0613c8baf
+    name: system-1
+    type: system/metrics
+    use_output: default
+    meta:
+      package:
+        name: system
+        version: 0.5.3
+    data_stream:
+      namespace: default
+    streams:
+      - id: system/metrics-system.cpu
+        data_stream:
+          dataset: system.cpu
+          type: metrics
+        metricsets:
+          - cpu
+        cpu.metrics:
+          - percentages
+          - normalized_percentages
+        period: 10s
+      - id: system/metrics-system.diskio
+        data_stream:
+          dataset: system.diskio
+          type: metrics
+        metricsets:
+          - diskio
+        diskio.include_devices: null
+        period: 10s
+      - id: system/metrics-system.load
+        data_stream:
+          dataset: system.load
+          type: metrics
+        metricsets:
+          - load
+        period: 10s
+      - id: system/metrics-system.memory
+        data_stream:
+          dataset: system.memory
+          type: metrics
+        metricsets:
+          - memory
+        period: 10s
+      - id: system/metrics-system.network
+        data_stream:
+          dataset: system.network
+          type: metrics
+        metricsets:
+          - network
+        period: 10s
+        network.interfaces: null
+      - id: system/metrics-system.process
+        data_stream:
+          dataset: system.process
+          type: metrics
+        metricsets:
+          - process
+        period: 10s
+        process.include_top_n.by_cpu: 5
+        process.include_top_n.by_memory: 5
+        process.cmdline.cache.enabled: true
+        process.cgroups.enabled: true
+        processes:
+          - .*
+      - id: system/metrics-system.process_summary
+        data_stream:
+          dataset: system.process_summary
+          type: metrics
+        metricsets:
+          - process_summary
+        period: 10s
+      - id: system/metrics-system.socket_summary
+        data_stream:
+          dataset: system.socket_summary
+          type: metrics
+        metricsets:
+          - socket_summary
+        period: 10s
+      - id: system/metrics-system.uptime
+        data_stream:
+          dataset: system.uptime
+          type: metrics
+        metricsets:
+          - uptime
+        period: 10s
+  - id: 5a40bea0-fdb2-11ea-94c8-e1f0613c8baf
+    name: Elastic Endpoint Security
+    type: endpoint
+    use_output: default
+    meta:
+      package:
+        name: endpoint
+        version: 0.13.1
+    data_stream:
+      namespace: default
+    artifact_manifest:
+      manifest_version: 1.0.0
+      schema_version: v1
+      artifacts:
+        endpoint-exceptionlist-macos-v1:
+          encryption_algorithm: none
+          decoded_sha256: d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658
+          decoded_size: 14
+          encoded_sha256: f8e6afa1d5662f5b37f83337af774b5785b5b7f1daee08b7b00c2d6813874cda
+          encoded_size: 22
+          relative_url: >-
+            /api/endpoint/artifacts/download/endpoint-exceptionlist-macos-v1/d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658
+          compression_algorithm: zlib
+        endpoint-exceptionlist-windows-v1:
+          encryption_algorithm: none
+          decoded_sha256: d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658
+          decoded_size: 14
+          encoded_sha256: f8e6afa1d5662f5b37f83337af774b5785b5b7f1daee08b7b00c2d6813874cda
+          encoded_size: 22
+          relative_url: >-
+            /api/endpoint/artifacts/download/endpoint-exceptionlist-windows-v1/d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658
+          compression_algorithm: zlib
+    policy:
+      windows:
+        events:
+          dll_and_driver_load: true
+          dns: true
+          file: true
+          network: true
+          process: true
+          registry: true
+          security: true
+        malware:
+          mode: prevent
+        logging:
+          file: info
+      mac:
+        events:
+          process: true
+          file: true
+          network: true
+        malware:
+          mode: prevent
+        logging:
+          file: info
+      linux:
+        events:
+          process: true
+          file: true
+          network: true
+        logging:
+          file: info
+    streams: []
