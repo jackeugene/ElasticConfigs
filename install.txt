@@ -1,0 +1,72 @@
+-------------------------------------------------------------------------------------
+GIT
+-------------------------------------------------------------------------------------
+Windows Download
+https://git-scm.com/download/win
+
+-------------------------------------------------------------------------------------
+
+DIRECTORIES
+
+Create temp_downloads directory
+Create j_utils directory
+
+In temp_downloads run:
+git clone https://github.com/jackeugene/ElasticConfigs.git
+
+-------------------------------------------------------------------------------------
+SYSMON
+
+Sysmon Download and Instructions
+https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon
+
+Create j_utils/sysmon
+
+Unzip and move to j_utils/sysmon
+
+Copy sysmonconfig-export.xml from temp_downloads to j_utils\sysmon
+
+Install config file from command line in j_utils\sysmon:
+sysmon.exe -accepteula -i sysmonconfig-export.xml
+--------------------------------------------------------------------------------------
+WINLOGBEAT
+
+Winlogbeat Download
+https://www.elastic.co/downloads/beats/winlogbeat
+
+Unzip and move to program files
+
+Rename directory WinlogBeat
+
+Copy winlogbeat.yml from temp_downloads to winlogbeat directory
+
+Run in Power Shell
+.\install-service-winlogbeat.ps1
+
+In Powershell: Start-Service winlogbeat
+
+Check c:\programdata\winlogbeat\logs to ensure connection to elastic with no errors
+If you don't see ProgramData change View Options in Explorer to Show hidden files, folders, and drives
+Download Notepad++ to view yml
+--------------------------------------------------------------------------------------
+ELASTIC ENDPOINT SECURITY (BETA)
+
+Elastic Endpoint Security Download
+Windows Zip 64 bit
+https://www.elastic.co/downloads/elastic-agent
+
+Unzip and move to j_utils
+Rename to elastic-agent
+
+Open an Administrator PowerShell command prompt and run the installation script:
+.\install-service-elastic-agent.ps1
+Agent is now installed and in stopped state
+
+Copy elastic-agent.yml from temp_downloads to elastic-agent directory
+
+Start-Service
+-----------------------------------------
+
+
+
+
